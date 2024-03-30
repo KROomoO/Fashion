@@ -21,7 +21,7 @@ export const GoogleLogin = () => {
     const redirect_uri = process.env.REACT_APP_GOOGLE_REDIRECT_URI;
     const scope = process.env.REACT_APP_GOOGLE_SCOPE;
     const accessType = process.env.REACT_APP_GOOGLE_ACCESSTYPE;
-    const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&scope=${scope}&response_type=code&access_type=${accessType}`;
+    const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&scope=${scope}&response_type=code`;
 
     return (window.location.href = googleURL);
 };
