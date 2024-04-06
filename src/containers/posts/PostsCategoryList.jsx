@@ -6,6 +6,7 @@ import ListBox from "../../styles/components/posts/PostsListBox";
 import PaginationContainer from "./PaginationContainer";
 import PageContext from "../../context/PageContext";
 import styled from "styled-components";
+import ListBlank from "./ListBlank";
 
 const StyledFilter = styled.span`
     font-family: Pretendard;
@@ -48,7 +49,9 @@ const PostsCategoryList = () => {
             {isLoading ? (
                 <ListBox>
                     {listItem.length === 0 ? (
-                        "목록이 비어있음"
+                        <>
+                            <ListBlank></ListBlank>
+                        </>
                     ) : (
                         <>
                             <div

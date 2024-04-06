@@ -7,6 +7,7 @@ import ListContainer from "./ListContainer";
 import PageContext from "../../context/PageContext";
 import PaginationContainer from "./PaginationContainer";
 import { useParams } from "react-router-dom";
+import ListBlank from "./ListBlank";
 
 const ActivityContainer = () => {
     const [value, setValue] = useState("posts");
@@ -48,7 +49,7 @@ const ActivityContainer = () => {
                         ></TabList>
                     </PostContext.Provider>
                     {listItem.length === 0 ? (
-                        "목록이 비어있음"
+                        <ListBlank></ListBlank>
                     ) : (
                         <>
                             {listItem.map((item, index) => {

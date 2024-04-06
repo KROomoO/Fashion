@@ -9,6 +9,7 @@ import styled from "styled-components";
 import PageContext from "../../context/PageContext";
 import PaginationContainer from "./PaginationContainer";
 import ListContainer from "./ListContainer";
+import ListBlank from "./ListBlank";
 
 const PostsListTitleCategory = styled(PostsListTitle)`
     width: 110px;
@@ -94,7 +95,7 @@ const PostsSearchList = () => {
                         ></TabList>
                     </PostContext.Provider>
                     {listItem.length === 0 ? (
-                        "목록이 비어있음"
+                        <ListBlank></ListBlank>
                     ) : (
                         <>
                             {listItem.map((item, index) => {

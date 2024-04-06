@@ -48,6 +48,17 @@ const SubmitButton = styled(PostsButton)`
     margin-left: 8px;
 `;
 
+const DeletedComment = styled.p`
+    height: 40px;
+    text-decoration: line-through;
+    color: #cacaca;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    text-align: left;
+`;
+
 const EditComment = ({ content, postId, commentId, setIsOpenEditBox }) => {
     const [contentValue, setContentValue] = useState("");
 
@@ -123,7 +134,9 @@ const ChildComment = ({ commentItem, postId, memberId }) => {
                         <PostsCommentContent>
                             {commentItem.content}
                         </PostsCommentContent>
-                        <PostsCommentBottomBox>
+                        <PostsCommentBottomBox
+                            style={{ display: "flex", justifyContent: "end" }}
+                        >
                             {memberId === commentItem.memberId ? (
                                 <>
                                     <ReplyComment
@@ -134,6 +147,7 @@ const ChildComment = ({ commentItem, postId, memberId }) => {
                                         수정
                                     </ReplyComment>
                                     <ReplyComment
+                                        style={{ marginLeft: "12px" }}
                                         onClick={() =>
                                             handleDeleteComment({
                                                 postId: postId,
@@ -170,9 +184,14 @@ const ParentComment = ({ commentItem, postId }) => {
         getMemberId();
     }, []);
 
-    useEffect(() => {
-        console.log(commentItem);
-    }, [commentItem]);
+    const handleOnclickReply = () => {
+        if (memberId === "") {
+            alert("로그인 후 이용해주세요.");
+            window.location.href = "/login";
+        } else {
+            setIsOpenReplyBox(!isOpenReplyBox);
+        }
+    };
 
     return (
         <>
@@ -184,110 +203,134 @@ const ParentComment = ({ commentItem, postId }) => {
                 }}
             >
                 <PostsCommentBox>
-                    {isOpenEditBox ? (
-                        <EditComment
-                            content={commentItem.content}
-                            postId={postId}
-                            commentId={commentItem.commentId}
-                            setIsOpenEditBox={setIsOpenEditBox}
-                        ></EditComment>
+                    {commentItem.deleteStatus === "Y" ? (
+                        <DeletedComment>
+                            작성자에 의해 댓글이 삭제되었습니다.
+                        </DeletedComment>
                     ) : (
                         <>
-                            <PostsCommentHeaderBox>
-                                <PostsProfileNickname>
-                                    {commentItem.creator}
-                                </PostsProfileNickname>
-                                <Duration date={commentItem.createdDate} />
-                            </PostsCommentHeaderBox>
-                            <PostsCommentContent>
-                                {commentItem.content}
-                            </PostsCommentContent>
-                            <PostsCommentBottomBox>
-                                <ReplyComment
-                                    onClick={() =>
-                                        setIsOpenReplyBox(!isOpenReplyBox)
-                                    }
-                                >
-                                    답글
-                                </ReplyComment>
-                                {memberId === commentItem.memberId ? (
-                                    <>
-                                        <ReplyComment
-                                            onClick={() => {
-                                                setIsOpenEditBox(
-                                                    !isOpenEditBox
-                                                );
-                                                setIsOpenReplyBox(false);
-                                            }}
-                                        >
-                                            수정
-                                        </ReplyComment>
-                                        <ReplyComment
-                                            onClick={() =>
-                                                handleDeleteComment({
-                                                    postId: postId,
-                                                    commentId:
-                                                        commentItem.commentId,
-                                                })
-                                            }
-                                        >
-                                            삭제
-                                        </ReplyComment>
-                                    </>
-                                ) : null}
-                            </PostsCommentBottomBox>
-                            {isOpenReplyBox ? (
+                            {isOpenEditBox ? (
+                                <EditComment
+                                    content={commentItem.content}
+                                    postId={postId}
+                                    commentId={commentItem.commentId}
+                                    setIsOpenEditBox={setIsOpenEditBox}
+                                ></EditComment>
+                            ) : (
                                 <>
-                                    <Stack sx={{ width: "100%" }}>
-                                        <TextField
-                                            hiddenLabel
-                                            variant="outlined"
-                                            placeholder="댓글을 작성해주세요"
-                                            multiline
-                                            rows={3}
-                                            fullWidth
-                                            onChange={(e) =>
-                                                setChildCommentValue(
-                                                    e.target.value
-                                                )
-                                            }
-                                            value={childCommentValue}
+                                    <PostsCommentHeaderBox>
+                                        <PostsProfileNickname>
+                                            {commentItem.creator}
+                                        </PostsProfileNickname>
+                                        <Duration
+                                            date={commentItem.createdDate}
                                         />
-                                    </Stack>
-                                    <div
+                                    </PostsCommentHeaderBox>
+                                    <PostsCommentContent>
+                                        {commentItem.content}
+                                    </PostsCommentContent>
+                                    <PostsCommentBottomBox
                                         style={{
-                                            width: "100%",
                                             display: "flex",
-                                            justifyContent: "end",
-                                            marginTop: "16px",
-                                            marginBottom: "12px",
+                                            justifyContent: "space-between",
                                         }}
                                     >
-                                        <CancelButton
-                                            onClick={() =>
-                                                setIsOpenReplyBox(
-                                                    !isOpenReplyBox
-                                                )
-                                            }
+                                        <ReplyComment
+                                            onClick={() => handleOnclickReply()}
                                         >
-                                            취소
-                                        </CancelButton>
-                                        <SubmitButton
-                                            onClick={() =>
-                                                handleSubmitComment({
-                                                    content: childCommentValue,
-                                                    postId: postId,
-                                                    memberId: memberId,
-                                                    parentCommentId:
-                                                        commentItem.commentId,
-                                                })
-                                            }
-                                        >
-                                            등록
-                                        </SubmitButton>
-                                    </div>
+                                            답글
+                                        </ReplyComment>
+                                        <div>
+                                            {memberId ===
+                                            commentItem.memberId ? (
+                                                <>
+                                                    <ReplyComment
+                                                        onClick={() => {
+                                                            setIsOpenEditBox(
+                                                                !isOpenEditBox
+                                                            );
+                                                            setIsOpenReplyBox(
+                                                                false
+                                                            );
+                                                        }}
+                                                    >
+                                                        수정
+                                                    </ReplyComment>
+                                                    <ReplyComment
+                                                        style={{
+                                                            marginLeft: "12px",
+                                                        }}
+                                                        onClick={() =>
+                                                            handleDeleteComment(
+                                                                {
+                                                                    postId: postId,
+                                                                    commentId:
+                                                                        commentItem.commentId,
+                                                                }
+                                                            )
+                                                        }
+                                                    >
+                                                        삭제
+                                                    </ReplyComment>
+                                                </>
+                                            ) : null}
+                                        </div>
+                                    </PostsCommentBottomBox>
+                                    {isOpenReplyBox ? (
+                                        <>
+                                            <Stack sx={{ width: "100%" }}>
+                                                <TextField
+                                                    hiddenLabel
+                                                    variant="outlined"
+                                                    placeholder="댓글을 작성해주세요"
+                                                    multiline
+                                                    rows={3}
+                                                    fullWidth
+                                                    onChange={(e) =>
+                                                        setChildCommentValue(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    value={childCommentValue}
+                                                />
+                                            </Stack>
+                                            <div
+                                                style={{
+                                                    width: "100%",
+                                                    display: "flex",
+                                                    justifyContent: "end",
+                                                    marginTop: "16px",
+                                                    marginBottom: "12px",
+                                                }}
+                                            >
+                                                <CancelButton
+                                                    onClick={() =>
+                                                        setIsOpenReplyBox(
+                                                            !isOpenReplyBox
+                                                        )
+                                                    }
+                                                >
+                                                    취소
+                                                </CancelButton>
+                                                <SubmitButton
+                                                    onClick={() =>
+                                                        handleSubmitComment({
+                                                            content:
+                                                                childCommentValue,
+                                                            postId: postId,
+                                                            memberId: memberId,
+                                                            parentCommentId:
+                                                                commentItem.commentId,
+                                                        })
+                                                    }
+                                                >
+                                                    등록
+                                                </SubmitButton>
+                                            </div>
+                                        </>
+                                    ) : null}
                                 </>
-                            ) : null}
+                            )}
                         </>
                     )}
                 </PostsCommentBox>
@@ -317,7 +360,6 @@ const CommentList = ({ commentList, postId }) => {
 
     useEffect(() => {
         if (commentList.length !== 0) {
-            // const formatComments = () => {
             let formattedComments = [];
 
             for (let item of commentList) {
