@@ -27,7 +27,7 @@ const ReplyComment = styled.span`
     }
 `;
 
-const PostsCommentBottomBox = styled.p`
+const PostsCommentBottomBox = styled.div`
     width: 100%;
     margin-bottom: 12px;
 `;
@@ -50,7 +50,6 @@ const SubmitButton = styled(PostsButton)`
 
 const DeletedComment = styled.p`
     height: 40px;
-    text-decoration: line-through;
     color: #cacaca;
     font-family: Pretendard;
     font-size: 14px;

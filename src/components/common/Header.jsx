@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import { getJWTToken } from "../../utils/JWTToken";
 import logoutUser from "../../services/common/logout";
@@ -53,6 +53,7 @@ const defaultSearchType = "title";
 function Header() {
     const dropDownRef = useRef(null);
     const slideRef = useRef(null);
+    const navigate = useNavigate();
 
     const [memberId, setMemberId] = useState("");
     const [isOpen, setIsOpen] = useDetechClose(dropDownRef, false);
@@ -95,6 +96,10 @@ function Header() {
     }, []);
 
     useEffect(() => {
+        console.log("header");
+    }, []);
+
+    useEffect(() => {
         if (categoryItem.length !== 0) {
             const defaultValue = categoryItem.find(
                 (obj) => obj.categoryName === "전체글"
@@ -120,7 +125,13 @@ function Header() {
         if (searchText === "") {
             alert("검색어를 입력해주세요");
         } else {
-            window.location.href = `/posts/search?category_id=${selectCategory}&search_type=${selectSearchType}&text=${searchText}`;
+            navigate("/posts/search", {
+                state: {
+                    categoryId: selectCategory,
+                    searchType: selectSearchType,
+                    text: searchText,
+                },
+            });
         }
     };
 

@@ -13,7 +13,7 @@ import PostsProfileNickname from "../../styles/components/posts/view/PostsProfil
 import Duration from "./Duration";
 import PostsIcon from "../../styles/components/posts/view/PostsIcon";
 import PostsCount from "../../styles/components/posts/view/PostsCount";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import PostsCommentContent from "../../styles/components/posts/PostsCommentContent";
 
 const StyleItemBox = styled.div`
@@ -103,13 +103,9 @@ const ListContainer = ({ item }) => {
                             plugin={[colorSyntax]}
                         />
                     </div>
-                    {/* <StyleItemImg
-                        src={
-                            process.env.PUBLIC_URL +
-                            "/images/profile-sample.jpg"
-                        }
-                        alt="ContentImg"
-                    /> */}
+                    {!!item.image ? (
+                        <StyleItemImg src={item.image} alt="ContentImg" />
+                    ) : null}
                     <PostsDataBox style={{ marginBottom: "32px" }}>
                         <div
                             style={{

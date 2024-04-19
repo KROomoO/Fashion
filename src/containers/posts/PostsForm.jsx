@@ -66,16 +66,17 @@ const PostsForm = ({ postData }) => {
             title: title,
             image: "testURL",
             // image: imageURL,
-            content: editRef.current.getInstance().getMarkdown(),
+            content: editRef.current.getInstance().getHTML(),
             categoryId: Number(category),
         };
         if (category === "") {
-            alert("카테고리 선택");
+            alert("카테고리를 선택해주세요");
         } else if (title === "") {
-            alert("타이틀 입력");
-        } else if (editRef.current.getInstance().getMarkdown().length <= 0) {
-            alert("본문 입력");
+            alert("제목을 입력해주세요");
+        } else if (editRef.current.getInstance().getHTML().length <= 0) {
+            alert("본문을 입력해주세요");
         } else {
+            console.log(submitData);
             if (postData && Object.keys(postData).length !== 0) {
                 await updatePosts({
                     ...submitData,
@@ -93,7 +94,7 @@ const PostsForm = ({ postData }) => {
         if (postData && Object.keys(postData).length !== 0) {
             setCategory(postData.category_id);
             setTitle(postData.title);
-            editRef.current.getInstance().setMarkdown(postData.content);
+            editRef.current.getInstance().setHTML(postData.content);
         }
     }, [postData]);
 
@@ -159,11 +160,11 @@ const PostsForm = ({ postData }) => {
                     language="ko-KR"
                     useCommandShortcut={false}
                     usageStatistics={false}
+                    hideModeSwitch={true}
+                    imageSizeEditing={true}
                     plugins={[colorSyntax]}
                     hooks={{
                         addImageBlobHook: async (blob, callback) => {
-                            console.log(blob);
-                            console.log(blob.size);
                             const file = new File(
                                 [blob],
                                 encodeURI(blob.name),
@@ -171,13 +172,12 @@ const PostsForm = ({ postData }) => {
                                     type: blob.type,
                                 }
                             );
-                            console.log(file);
-                            const responseURL = await uploadImageFile(file);
-                            if (imageURL === "") {
-                                setImageURL(responseURL);
-                            }
-                            console.log(responseURL);
-                            callback(responseURL);
+                            const formData = new FormData();
+                            formData.append("image", file);
+                            console.log("formData", formData);
+                            const src = URL.createObjectURL(file); // 이미지 업로드 api 구현 시 src는 서버 image url response로 변경 및 setImageURL 배열로 변경후 입력받는 src 마다 배열에 push
+                            console.log(src);
+                            callback(src);
                         },
                     }}
                 />

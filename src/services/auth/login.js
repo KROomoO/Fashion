@@ -3,6 +3,7 @@ import Axios from "axios";
 import { setJWTToken } from "../../utils/JWTToken";
 
 export const submitLogin = async (submitData) => {
+    console.log(submitData);
     try {
         const response = await Axios.post("/api/login", submitData);
         console.log(response);

@@ -1,4 +1,5 @@
-export const setJWTToken = (jwtToken) => {
+export const setJWTToken = async (jwtToken) => {
+    console.log("setJWTToken");
     localStorage.setItem("jwt", JSON.stringify(jwtToken));
 };
 

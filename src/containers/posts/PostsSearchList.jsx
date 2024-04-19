@@ -23,15 +23,17 @@ const PostsSearchList = () => {
     const [categoryTextList, setCategoryTextList] = useState({});
     const [page, setPage] = useState(1);
 
+    const { categoryId, searchType, text } = useLocation().state;
+
     const { categoryItem } = useOutletContext();
 
-    const location = useLocation();
+    // const location = useLocation();
 
-    const queryParams = new URLSearchParams(location.search);
+    // const queryParams = new URLSearchParams(location.search);
 
-    const categoryId = queryParams.get("category_id");
-    const searchType = queryParams.get("search_type");
-    const text = queryParams.get("text");
+    // const categoryId = queryParams.get("category_id");
+    // const searchType = queryParams.get("search_type");
+    // const text = queryParams.get("text");
 
     useEffect(() => {
         setValue(searchType);

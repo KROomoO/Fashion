@@ -102,8 +102,8 @@ export const signUpSocialUser = async (userInfo, social) => {
             `/api/oauth/${social}/signup`,
             userInfo
         );
-        console.log(JSON.parse(response));
-        setJWTToken(response.data.data);
+        console.log(response.data);
+        await setJWTToken(response.data);
         window.location.replace("/");
     } catch (error) {
         console.log(`Error sendReturn${social}UserInfo response`);

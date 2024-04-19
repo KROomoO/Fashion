@@ -25,6 +25,7 @@ const MainContainer = () => {
     }, [value, page]);
 
     useEffect(() => {
+        console.log(listItem);
         if (listItem.length !== 0) {
             setIsLoading(true);
         }
