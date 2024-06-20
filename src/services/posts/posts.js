@@ -60,6 +60,8 @@ export const loadMainPostsList = async (page, sort = "") => {
 
         const response = await apiClient.get("/api/boards", config);
 
+        console.log(response.data);
+
         return response.data.getBoardListList;
     } catch (error) {
         console.log("Error loadMainPostsList Data");
