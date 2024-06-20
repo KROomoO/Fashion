@@ -5,6 +5,7 @@ const StyledMenu = styled.ul`
     background: #fff;
     border-radius: 8px;
     position: absolute;
+    z-index: 1;
     top: 56px;
     right: -40px;
     width: 110px;

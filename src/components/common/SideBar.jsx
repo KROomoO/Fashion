@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 const StyledSideBar = styled.div`
     width: 140px;
     position: absolute;
-    top: 116px;
-    left: 22%;
+    margin-top: 60px;
+    margin-right: 880px;
 `;
 
 const StyledMessage = styled.p`
@@ -83,6 +83,13 @@ const StyledSubMenu = styled.div`
     }
 `;
 
+const StyledMainContainer = styled.div`
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+`;
+
 const SideBar = () => {
     const [checkActive, setCheckActive] = useState([]);
     const [selectedItem, setSelectedItem] = useState();
@@ -108,63 +115,64 @@ const SideBar = () => {
 
     return (
         <>
-            {isLoading ? (
-                <>
-                    <StyledSideBar>
-                        <StyledMessage>
-                            다양한 패션글을 공유해보세요💬
-                        </StyledMessage>
-                        <Link to={"/posts/create"}>
-                            <StyledCreateButton>
-                                <StyledCreateImg
-                                    src={
-                                        process.env.PUBLIC_URL +
-                                        "/images/create.png"
-                                    }
-                                    alt="CreateButtonImg"
-                                />
+            <StyledMainContainer>
+                {isLoading ? (
+                    <>
+                        <StyledSideBar>
+                            <StyledMessage>
+                                다양한 패션글을 공유해보세요💬
+                            </StyledMessage>
+                            <Link to={"/posts/create"}>
+                                <StyledCreateButton>
+                                    <StyledCreateImg
+                                        src={
+                                            process.env.PUBLIC_URL +
+                                            "/images/create.png"
+                                        }
+                                        alt="CreateButtonImg"
+                                    />
 
-                                <StyledCreateSpan>글쓰기</StyledCreateSpan>
-                            </StyledCreateButton>
-                        </Link>
-                        <div>
-                            <StyledMainMenu
-                                style={{
-                                    backgroundColor: checkActive.includes(
-                                        selectedItem
-                                    )
-                                        ? "#f8f8f8"
-                                        : null,
-                                }}
-                            >
-                                커뮤니티
-                            </StyledMainMenu>
-                            <StyledSubMenuBox>
-                                {categories.map((item, index) => {
-                                    return (
-                                        <Link
-                                            to={`/posts/list?category_id=${item.categoryId}`}
-                                            key={index}
-                                        >
-                                            <StyledSubMenu
-                                                value={item.categoryId}
-                                                onClick={(e) =>
-                                                    handleListItemClick(e)
-                                                }
-                                                className={
-                                                    selectedItem ===
-                                                    item.categoryId
-                                                        ? "active"
-                                                        : null
-                                                }
+                                    <StyledCreateSpan>글쓰기</StyledCreateSpan>
+                                </StyledCreateButton>
+                            </Link>
+                            <div>
+                                <StyledMainMenu
+                                    style={{
+                                        backgroundColor: checkActive.includes(
+                                            selectedItem
+                                        )
+                                            ? "#f8f8f8"
+                                            : null,
+                                    }}
+                                >
+                                    커뮤니티
+                                </StyledMainMenu>
+                                <StyledSubMenuBox>
+                                    {categories.map((item, index) => {
+                                        return (
+                                            <Link
+                                                to={`/posts/list?category_id=${item.categoryId}`}
+                                                key={index}
                                             >
-                                                {item.categoryName}
-                                            </StyledSubMenu>
-                                        </Link>
-                                    );
-                                })}
-                            </StyledSubMenuBox>
-                            {/* <StyledMainMenu
+                                                <StyledSubMenu
+                                                    value={item.categoryId}
+                                                    onClick={(e) =>
+                                                        handleListItemClick(e)
+                                                    }
+                                                    className={
+                                                        selectedItem ===
+                                                        item.categoryId
+                                                            ? "active"
+                                                            : null
+                                                    }
+                                                >
+                                                    {item.categoryName}
+                                                </StyledSubMenu>
+                                            </Link>
+                                        );
+                                    })}
+                                </StyledSubMenuBox>
+                                {/* <StyledMainMenu
                         style={{
                             backgroundColor: checkSelectItem.includes(
                                 selectedItem
@@ -175,19 +183,20 @@ const SideBar = () => {
                     >
                         공지사항
                     </StyledMainMenu> */}
-                        </div>
-                    </StyledSideBar>
-                    <Outlet
-                        context={{
-                            tabsItem: [
-                                { categoryId: 0, categoryName: "전체글" },
-                                ...categories,
-                            ],
-                            categoryItem: categoryItem,
-                        }}
-                    />
-                </>
-            ) : null}
+                            </div>
+                        </StyledSideBar>
+                        <Outlet
+                            context={{
+                                tabsItem: [
+                                    { categoryId: 0, categoryName: "전체글" },
+                                    ...categories,
+                                ],
+                                categoryItem: categoryItem,
+                            }}
+                        />
+                    </>
+                ) : null}
+            </StyledMainContainer>
         </>
     );
 };

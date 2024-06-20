@@ -69,17 +69,10 @@ function Header() {
         async function RememberMe() {
             const jwtToken = await getJWTToken();
             if (!!jwtToken) {
-                if (date.getTime() > jwtToken.accessTokenExpiresIn) {
-                    console.log("jwtAccessToken 기간 만료");
-                    // localStorage.removeItem("jwt");
+                if (date.getTime() > jwtToken.refreshTokenExpiresIn) {
+                    localStorage.removeItem("jwt");
                 } else {
                     setMemberId(jwtToken.memberId);
-                    // 여기다가 service 폴더에서 구현한 자동로그인 로직 load
-                    // const response = await Axios.get("/api/asdf", {
-                    //     accessToken: jwt.accessToken,
-                    //     refreshToken: jwt.refreshToken,
-                    // });
-                    // console.log(response);
                 }
             }
 
@@ -93,10 +86,6 @@ function Header() {
         RememberMe();
 
         setSelectSearchType(defaultSearchType);
-    }, []);
-
-    useEffect(() => {
-        console.log("header");
     }, []);
 
     useEffect(() => {

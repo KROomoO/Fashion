@@ -1,163 +1,114 @@
-import Axios from "axios";
+import apiClient from "../apiClient";
 
 const jwtToken = JSON.parse(localStorage.getItem("jwt"));
 
 export const searchUser = async (memberId) => {
-    if (!jwtToken) {
-        alert("잘못된 접근입니다. 로그인 후 이용해주세요");
-        window.location.href = "/login";
-    }
     try {
-        const response = await Axios.get("/api/members", {
-            headers: {
-                Authorization: `Bearer ${jwtToken.accessToken}`,
-                "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-            },
+        const config = {
             params: {
                 member_id: memberId,
             },
-        });
-        console.log(response);
+        };
+        const response = await apiClient.get("/api/members", config);
+
         return response.data.data;
     } catch (error) {
         console.log("Error searchUser data");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        }
     }
 };
 
 export const updateEmail = async (email) => {
-    console.log(email);
     try {
-        await Axios.put(
-            "/api/members/emails",
-            { email: email },
-            {
-                headers: {
-                    Authorization: `Bearer ${jwtToken.accessToken}`,
-                    "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-                },
-                params: {
-                    member_id: jwtToken.memberId,
-                },
-            }
-        );
+        const config = {
+            params: {
+                member_id: jwtToken.memberId,
+            },
+        };
+        await apiClient.put("/api/members/emails", { email: email }, config);
+
         window.location.replace(`/members/${jwtToken.memberId}`);
     } catch (error) {
         console.log("Error updateEmail");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        }
     }
 };
 
 export const updateNickname = async (nickname) => {
     try {
-        await Axios.put(
+        console.log(nickname);
+        const config = {
+            params: {
+                member_id: jwtToken.memberId,
+            },
+        };
+        await apiClient.put(
             "/api/members/nicknames",
             { nickname: nickname },
-            {
-                headers: {
-                    Authorization: `Bearer ${jwtToken.accessToken}`,
-                    "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-                },
-                params: {
-                    member_id: jwtToken.memberId,
-                },
-            }
+            config
         );
+
         window.location.replace(`/members/${jwtToken.memberId}`);
     } catch (error) {
         console.log("Error updateNickname");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        }
     }
 };
 
 export const updatePassword = async (password) => {
     try {
-        console.log(password);
-        await Axios.put(
+        const config = {
+            params: {
+                member_id: jwtToken.memberId,
+            },
+        };
+        await apiClient.put(
             "/api/members/passwords",
             {
                 asIsPassword: password.asIsPassword,
                 toBePassword: password.toBePassword,
                 confirmToBePassword: password.confirmToBePassword,
             },
-            {
-                headers: {
-                    Authorization: `Bearer ${jwtToken.accessToken}`,
-                    "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-                },
-                params: {
-                    member_id: jwtToken.memberId,
-                },
-            }
+            config
         );
+
         window.location.replace(`/members/${jwtToken.memberId}`);
     } catch (error) {
         console.log("Error updatePassword");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        }
     }
 };
 
 export const deleteUser = async (password) => {
     try {
-        await Axios.delete("/api/members", {
-            headers: {
-                Authorization: `Bearer ${jwtToken.accessToken}`,
-                "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-            },
+        const config = {
             params: {
                 member_id: jwtToken.memberId,
             },
             data: {
                 password: password,
             },
-        });
+        };
+        await apiClient.delete("/api/members", config);
         localStorage.removeItem("jwt");
         window.location.replace("/");
     } catch (error) {
-        console.log("Error DeletePassword");
         if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+            if (error.response.status === 400) {
+                alert("비밀번호가 일치하지 않습니다.");
+            }
         }
+        console.log("Error DeletePassword");
     }
 };
 
 export const deleteSocialUser = async () => {
     try {
-        await Axios.delete("/api/social-members", {
-            headers: {
-                Authorization: `Bearer ${jwtToken.accessToken}`,
-                "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-            },
+        const config = {
             params: {
                 member_id: jwtToken.memberId,
             },
-        });
+        };
+        await apiClient.delete("/api/social-members", config);
         localStorage.removeItem("jwt");
         window.location.replace("/");
     } catch (error) {
         console.log("Error DeletePassword");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        }
     }
 };

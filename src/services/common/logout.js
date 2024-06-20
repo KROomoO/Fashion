@@ -1,4 +1,4 @@
-import Axios from "axios";
+import apiClient from "../apiClient";
 
 const jwtToken = JSON.parse(localStorage.getItem("jwt"));
 
@@ -6,22 +6,18 @@ const logoutUser = async () => {
     if (!jwtToken) {
         alert("잘못된 접근입니다. 로그인 후 이용해주세요");
         window.location.href = "/login";
-    }
-    try {
-        await Axios.get("/api/logout", {
-            headers: {
-                Authorization: `Bearer ${jwtToken.accessToken}`,
-                "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-            },
-        });
+    } else if (new Date().getTime() > jwtToken.refreshTokenExpiresIn) {
         localStorage.removeItem("jwt");
         window.location.replace("/");
-    } catch (error) {
-        console.log("Error logoutUser");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+    } else {
+        try {
+            await apiClient.get("/api/logout");
+
+            localStorage.removeItem("jwt");
+            window.location.replace("/");
+        } catch (error) {
+            console.log("Error logoutUser");
+            console.log(error);
         }
     }
 };

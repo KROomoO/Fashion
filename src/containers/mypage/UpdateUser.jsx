@@ -90,6 +90,7 @@ const PopUpItem = ({ item, socialType, onHandleClosePopUp }) => {
         } else if (duplicateNickname !== "SUCCESS") {
             alert("닉네임 중복 확인을 진행해주세요");
         } else {
+            console.log("api");
             updateNickname(nickname);
         }
     };

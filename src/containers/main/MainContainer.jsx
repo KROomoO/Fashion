@@ -25,7 +25,6 @@ const MainContainer = () => {
     }, [value, page]);
 
     useEffect(() => {
-        console.log(listItem);
         if (listItem.length !== 0) {
             setIsLoading(true);
         }
@@ -57,7 +56,9 @@ const MainContainer = () => {
                         ></PaginationContainer>
                     </PageContext.Provider>
                 </ListBox>
-            ) : null}
+            ) : (
+                <h1>데이터없음</h1>
+            )}
         </>
     );
 };

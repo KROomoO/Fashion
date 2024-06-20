@@ -1,51 +1,57 @@
-import Axios from "axios";
-
-const jwtToken = JSON.parse(localStorage.getItem("jwt"));
+import apiClient from "../apiClient";
 
 export const increaseHearts = async (data) => {
-    try {
-        await Axios.post("/api/hearts", null, {
-            params: {
-                memberId: data.memberId,
-                postId: data.postId,
-            },
-            headers: {
-                Authorization: `Bearer ${jwtToken.accessToken}`,
-                "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-            },
-        });
-        return true;
-    } catch (error) {
-        console.log("Error increaseHearts");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+    if (!!data.memberId === false) {
+        alert("로그인 후 이용해주시기 바랍니다.");
+        window.location.href = "/login";
+    } else {
+        try {
+            const config = {
+                params: {
+                    memberId: data.memberId,
+                    postId: data.postId,
+                },
+            };
+            await apiClient.post("/api/hearts", null, config);
+
+            return true;
+        } catch (error) {
+            console.log("Error increaseHearts");
+            if (error.response.status === 400) {
+                alert(
+                    "서버와 연결할 수 없습니다. 잠시 후 이용해주시기바랍니다."
+                );
+            }
+
+            return false;
         }
-        return false;
     }
 };
 
 export const decreaseHearts = async (data) => {
-    try {
-        await Axios.delete("/api/hearts", {
-            params: {
-                memberId: data.memberId,
-                postId: data.postId,
-            },
-            headers: {
-                Authorization: `Bearer ${jwtToken.accessToken}`,
-                "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-            },
-        });
-        return true;
-    } catch (error) {
-        console.log("Error decreaseHearts");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+    if (!!data.memberId === false) {
+        alert("로그인 후 이용해주시기 바랍니다.");
+        window.location.href = "/login";
+    } else {
+        try {
+            const config = {
+                params: {
+                    memberId: data.memberId,
+                    postId: data.postId,
+                },
+            };
+            await apiClient.delete("/api/hearts", config);
+
+            return true;
+        } catch (error) {
+            console.log("Error decreaseHearts");
+            if (error.response.status === 400) {
+                alert(
+                    "서버와 연결할 수 없습니다. 잠시 후 이용해주시기바랍니다."
+                );
+            }
+
+            return false;
         }
-        return false;
     }
 };

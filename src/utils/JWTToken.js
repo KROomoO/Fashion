@@ -1,5 +1,4 @@
 export const setJWTToken = async (jwtToken) => {
-    console.log("setJWTToken");
     localStorage.setItem("jwt", JSON.stringify(jwtToken));
 };
 
@@ -17,4 +16,13 @@ export const checkJWTToken = () => {
             resolve(true);
         }
     });
+};
+
+export const refreshJWTToken = (accessToken, refreshToken) => {
+    const getData = JSON.parse(localStorage.getItem("jwt"));
+
+    getData.accessToken = accessToken.slice(7);
+    getData.refreshToken = refreshToken.slice(7);
+
+    localStorage.setItem("jwt", JSON.stringify(getData));
 };

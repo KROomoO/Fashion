@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import Axios from "axios";
 
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/toastui-editor.css";
@@ -14,7 +15,11 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 import { uploadImageFile } from "../../services/posts/testS3";
-import { savePosts, updatePosts } from "../../services/posts/posts";
+import {
+    getImageURI,
+    savePosts,
+    updatePosts,
+} from "../../services/posts/posts";
 
 import { PostsFormBox } from "../../styles/components/posts/PostsFormBox";
 import { PostsInput } from "../../styles/components/posts/PostsInput";
@@ -64,8 +69,7 @@ const PostsForm = ({ postData }) => {
     const handleSubmitPost = async () => {
         const submitData = {
             title: title,
-            image: "testURL",
-            // image: imageURL,
+            image: imageURL,
             content: editRef.current.getInstance().getHTML(),
             categoryId: Number(category),
         };
@@ -165,6 +169,7 @@ const PostsForm = ({ postData }) => {
                     plugins={[colorSyntax]}
                     hooks={{
                         addImageBlobHook: async (blob, callback) => {
+                            console.log(blob.type);
                             const file = new File(
                                 [blob],
                                 encodeURI(blob.name),
@@ -172,9 +177,14 @@ const PostsForm = ({ postData }) => {
                                     type: blob.type,
                                 }
                             );
+                            console.log(file);
                             const formData = new FormData();
                             formData.append("image", file);
-                            console.log("formData", formData);
+                            const response = await getImageURI(formData);
+                            console.log(response);
+                            if (imageURL === "") {
+                                setImageURL(response);
+                            }
                             const src = URL.createObjectURL(file); // 이미지 업로드 api 구현 시 src는 서버 image url response로 변경 및 setImageURL 배열로 변경후 입력받는 src 마다 배열에 push
                             console.log(src);
                             callback(src);

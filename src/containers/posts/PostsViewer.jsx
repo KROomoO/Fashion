@@ -157,9 +157,7 @@ const PostsViewer = () => {
             memberId: memberId,
             postId: postValue.postId,
         });
-        if (response !== true) {
-            alert("서버와 연결할 수 없습니다. 잠시후 이용해주세요.");
-        } else {
+        if (response) {
             setActiveHeart(true);
             setPostValue((prevState) => {
                 return {
@@ -175,9 +173,7 @@ const PostsViewer = () => {
             memberId: memberId,
             postId: postValue.postId,
         });
-        if (response !== true) {
-            alert("서버와 연결할 수 없습니다. 잠시후 이용해주세요.");
-        } else {
+        if (response) {
             setActiveHeart(false);
             setPostValue((prevState) => {
                 return {

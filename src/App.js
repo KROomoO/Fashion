@@ -17,6 +17,8 @@ import PostsSearchResult from "./routes/pages/PostsSearchResult";
 import PrivateRouteGroup from "./routes/auth/PrivateRouteGroup";
 import SideBar from "./components/common/SideBar";
 import MyActivity from "./routes/pages/MyActivity";
+import Error404 from "./routes/pages/Error404";
+import Error500 from "./routes/pages/Error500";
 
 function App() {
     return (
@@ -63,6 +65,8 @@ function App() {
                             />
                             <Route path="/posts/edit" element={<EditPost />} />
                         </Route>
+                        <Route path="/404" element={<Error404 />} />
+                        <Route path="/500" element={<Error500 />} />
                         <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>
