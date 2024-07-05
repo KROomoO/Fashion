@@ -14,11 +14,9 @@ export const saveComment = async ({
             memberId: memberId,
         });
 
-        return true;
+        window.location.reload();
     } catch (error) {
-        console.log("Error saveComment");
-
-        return false;
+        console.log("Error saveComment resonse");
     }
 };
 
@@ -29,11 +27,9 @@ export const changeComment = async ({ commentId, content }) => {
             content: content,
         });
 
-        return true;
+        window.location.reload();
     } catch (error) {
-        console.log("Error ChangeComment");
-
-        return false;
+        console.log("Error changeComment response");
     }
 };
 
@@ -47,10 +43,8 @@ export const deleteComment = async ({ postId, commentId }) => {
         };
         await apiClient.delete("/api/comments", config);
 
-        return true;
+        window.location.reload();
     } catch (error) {
-        console.log("Error deleteComment");
-
-        return false;
+        console.log("Error deleteComment response");
     }
 };

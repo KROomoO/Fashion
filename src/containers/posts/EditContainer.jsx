@@ -25,25 +25,21 @@ const EditContainer = () => {
 
     useEffect(() => {
         async function loadPostData() {
-            try {
-                const response = await loadPosts(postId, categoryId);
-                setPostData((prevState) => {
-                    return {
-                        ...prevState,
-                        category_id: response.categoryId,
-                        title: response.title,
-                        member_id: response.memberId,
-                        viewCount: response.hits,
-                        date: response.createdDate,
-                        content: response.content,
-                        likeCount: response.likeCount,
-                        commentCount: response.commentCount,
-                        post_id: response.postId,
-                    };
-                });
-            } catch (error) {
-                console.log("Error searchPost");
-            }
+            const response = await loadPosts(postId, categoryId);
+            setPostData((prevState) => {
+                return {
+                    ...prevState,
+                    category_id: response.categoryId,
+                    title: response.title,
+                    member_id: response.memberId,
+                    viewCount: response.hits,
+                    date: response.createdDate,
+                    content: response.content,
+                    likeCount: response.likeCount,
+                    commentCount: response.commentCount,
+                    post_id: response.postId,
+                };
+            });
         }
         loadPostData();
     }, [postId, categoryId]);

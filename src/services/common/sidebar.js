@@ -6,7 +6,6 @@ export const searchCategories = async () => {
 
         return response.data.categoryList;
     } catch (error) {
-        console.log("Error getCategories");
-        if (error.response) console.log(error.response.data);
+        console.log("Error searchCategories response");
     }
 };

@@ -106,10 +106,6 @@ const AuthSignUpForm = () => {
         }
     }, [inputData, onFocusInput, getValues]);
 
-    useEffect(() => {
-        console.log(duplicateMemberId);
-    }, [duplicateMemberId]);
-
     return (
         <>
             <SignUpForm onSubmit={handleSubmit(handleSignUpSubmit)}>

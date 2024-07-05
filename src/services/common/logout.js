@@ -6,7 +6,7 @@ const logoutUser = async () => {
     if (!jwtToken) {
         alert("잘못된 접근입니다. 로그인 후 이용해주세요");
         window.location.href = "/login";
-    } else if (new Date().getTime() > jwtToken.refreshTokenExpiresIn) {
+    } else if (new Date().getTime() > jwtToken.accessTokenExpiresIn) {
         localStorage.removeItem("jwt");
         window.location.replace("/");
     } else {
@@ -16,8 +16,7 @@ const logoutUser = async () => {
             localStorage.removeItem("jwt");
             window.location.replace("/");
         } catch (error) {
-            console.log("Error logoutUser");
-            console.log(error);
+            console.log("Error logoutUser response");
         }
     }
 };

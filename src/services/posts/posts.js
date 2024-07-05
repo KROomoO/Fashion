@@ -16,7 +16,7 @@ export const savePosts = async (submitData) => {
         window.location.href = `/posts?post_id=${response.data.postId}&category_id=${response.data.categoryId}`;
         return response;
     } catch (error) {
-        console.log("Error savePosts");
+        console.log("Error savePosts response");
     }
 };
 
@@ -39,7 +39,7 @@ export const loadPosts = async (
 
         return response.data;
     } catch (error) {
-        console.log("Error viewPosts Data");
+        console.log("Error loadPosts response");
     }
 };
 
@@ -60,11 +60,9 @@ export const loadMainPostsList = async (page, sort = "") => {
 
         const response = await apiClient.get("/api/boards", config);
 
-        console.log(response.data);
-
         return response.data.getBoardListList;
     } catch (error) {
-        console.log("Error loadMainPostsList Data");
+        console.log("Error loadMainPostsList response");
         return [];
     }
 };
@@ -88,7 +86,7 @@ export const loadCategoryPostsList = async (category_id, page, sort = "") => {
 
         return response.data.getBoardListList;
     } catch (error) {
-        console.log("Error loadCategoryPostsList Data");
+        console.log("Error loadCategoryPostsList response");
     }
 };
 
@@ -111,7 +109,7 @@ export const loadPostsSearchList = async (
 
         return response.data.getBoardListList;
     } catch (error) {
-        console.log("Error loadPostsSearchList");
+        console.log("Error loadPostsSearchList response");
     }
 };
 
@@ -142,7 +140,7 @@ export const loadActivityPostsList = async (value, memberId, page) => {
             }
         }
     } catch (error) {
-        console.log("Error loadActivityPostsList");
+        console.log("Error loadActivityPostsList response");
     }
 };
 
@@ -157,22 +155,26 @@ export const updatePosts = async (updateData) => {
 
         window.location.href = `/posts?post_id=${updateData.post_id}&category_id=${updateData.categoryId}`;
     } catch (error) {
-        console.log("Error updatePosts Data");
+        console.log("Error updatePosts response");
     }
 };
 
 export const deletePosts = async (post_id) => {
     try {
-        const config = {
-            params: {
-                post_id: post_id,
-            },
-        };
-        await apiClient.delete("/api/posts", config);
+        if (window.confirm("정말 삭제하시겠습니까?") === true) {
+            const config = {
+                params: {
+                    post_id: post_id,
+                },
+            };
+            await apiClient.delete("/api/posts", config);
 
-        window.location.replace("/");
+            window.location.replace("/");
+        } else {
+            window.location.reload();
+        }
     } catch (error) {
-        console.log("Error deletePosts");
+        console.log("Error deletePosts response");
     }
 };
 

@@ -13,8 +13,6 @@ const Duration = ({ date }) => {
         const createAt = moment(date);
         const now = moment();
 
-        // console.log(createAt);
-
         const durationDate = moment.duration(now.diff(createAt));
 
         // if (durationDate.asYears() >= 1) {

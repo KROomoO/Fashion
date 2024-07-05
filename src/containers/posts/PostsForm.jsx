@@ -80,7 +80,6 @@ const PostsForm = ({ postData }) => {
         } else if (editRef.current.getInstance().getHTML().length <= 0) {
             alert("본문을 입력해주세요");
         } else {
-            console.log(submitData);
             if (postData && Object.keys(postData).length !== 0) {
                 await updatePosts({
                     ...submitData,
@@ -88,8 +87,7 @@ const PostsForm = ({ postData }) => {
                     category_id: category,
                 });
             } else {
-                const response = await savePosts(submitData);
-                console.log(response);
+                await savePosts(submitData);
             }
         }
     };
@@ -169,25 +167,25 @@ const PostsForm = ({ postData }) => {
                     plugins={[colorSyntax]}
                     hooks={{
                         addImageBlobHook: async (blob, callback) => {
-                            console.log(blob.type);
-                            const file = new File(
-                                [blob],
-                                encodeURI(blob.name),
-                                {
-                                    type: blob.type,
-                                }
-                            );
-                            console.log(file);
-                            const formData = new FormData();
-                            formData.append("image", file);
-                            const response = await getImageURI(formData);
-                            console.log(response);
-                            if (imageURL === "") {
-                                setImageURL(response);
-                            }
-                            const src = URL.createObjectURL(file); // 이미지 업로드 api 구현 시 src는 서버 image url response로 변경 및 setImageURL 배열로 변경후 입력받는 src 마다 배열에 push
-                            console.log(src);
-                            callback(src);
+                            // console.log(blob.type);
+                            // const file = new File(
+                            //     [blob],
+                            //     encodeURI(blob.name),
+                            //     {
+                            //         type: blob.type,
+                            //     }
+                            // );
+                            // console.log(file);
+                            // const formData = new FormData();
+                            // formData.append("image", file);
+                            // const response = await getImageURI(formData);
+                            // console.log(response);
+                            // if (imageURL === "") {
+                            //     setImageURL(response);
+                            // }
+                            // const src = URL.createObjectURL(file); // 이미지 업로드 api 구현 시 src는 서버 image url response로 변경 및 setImageURL 배열로 변경후 입력받는 src 마다 배열에 push
+                            alert("이미지 업로드 추후 구현 예정");
+                            // callback(src);
                         },
                     }}
                 />

@@ -10,6 +10,7 @@ import PageContext from "../../context/PageContext";
 import PaginationContainer from "./PaginationContainer";
 import ListContainer from "./ListContainer";
 import ListBlank from "./ListBlank";
+import React from "react";
 
 const PostsListTitleCategory = styled(PostsListTitle)`
     width: 110px;

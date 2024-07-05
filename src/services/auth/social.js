@@ -11,8 +11,6 @@ export const NaverLogin = () => {
     const redirect_uri = process.env.REACT_APP_NAVER_REDIRECT_URI;
     const naverURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}`;
 
-    console.log(naverURL);
-
     return (window.location.href = naverURL);
 };
 

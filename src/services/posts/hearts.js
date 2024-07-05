@@ -16,12 +16,7 @@ export const increaseHearts = async (data) => {
 
             return true;
         } catch (error) {
-            console.log("Error increaseHearts");
-            if (error.response.status === 400) {
-                alert(
-                    "서버와 연결할 수 없습니다. 잠시 후 이용해주시기바랍니다."
-                );
-            }
+            console.log("Error increaseHearts response");
 
             return false;
         }
@@ -44,12 +39,7 @@ export const decreaseHearts = async (data) => {
 
             return true;
         } catch (error) {
-            console.log("Error decreaseHearts");
-            if (error.response.status === 400) {
-                alert(
-                    "서버와 연결할 수 없습니다. 잠시 후 이용해주시기바랍니다."
-                );
-            }
+            console.log("Error decreaseHearts response");
 
             return false;
         }
