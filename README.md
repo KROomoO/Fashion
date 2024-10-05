@@ -8,14 +8,28 @@
 3. 기술 스택
 4. 시스템 아키텍처
 5. 주요 기능
-6. 협업 관리
-7. 프로젝트 기간
-8. 프로젝트 관련 문서
+6. 프로젝트 기간
 </br>
 
 ## 👪 개발 멤버 소개
-- frontend [박성익](https://github.com/KROomoO)
-- backend [윤재성](https://github.com/JaesungYoun)
+<p align="center">
+  <table>
+      <tr>
+        <td>
+          <img src="https://github.com/Team-LOTD/frontend/assets/93576045/a2034775-6a0f-4ace-afdd-e86c22978b9e" width="120px" height="120px" />
+        </td>
+        <td>
+          <img src="https://github.com/Team-LOTD/frontend/assets/73388615/1fe2a4f3-b108-424b-b8e1-9c304320233c" width="120px" height="120px" />
+        </td>
+      </tr>
+      <tr>
+          <td height="30px" width="120px" align="center"> <a href="https://github.com/KROomoO">
+          🙂 박성익 <br>(Front-End) </a> <br></td>
+          <td height="30px" width="120px" align="center"> <a href="https://github.com/JaesungYoun">
+          🙂 윤재성 <br>(Back-End) </a> <br></td>
+      </tr>
+  </table>
+</p>
 </br>
 
 ## 💡 서비스 소개
@@ -37,9 +51,21 @@
 ![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)
 ![Styled Components](https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Webpack](https://img.shields.io/badge/webpack-%238DD6F9.svg?style=for-the-badge&logo=webpack&logoColor=black)
 </br>
 
 ### BackEnd
+![Java](https://img.shields.io/badge/java-007396.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![SpringBoot](https://img.shields.io/badge/springboot-%236DB33F.svg?style=for-the-badge&logo=springboot&logoColor=white)
+![JPA](https://img.shields.io/badge/JPA-%236DB33F.svg?style=for-the-badge&logo=JPA&logoColor=white)
+![QueryDsl](https://img.shields.io/badge/QueryDsl-2185D0?style=for-the-badge&logo=QueryDsl&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
+![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
 </br>
 
 ### 상세 기술스택 및 버전
@@ -59,9 +85,22 @@
 |          | Toast-ui            | toast-ui/editor-plugin-color-syntax | 3.1.0   |
 |          | Moment              | moment                  | 2.30.1   |
 |          | AWS S3              | aws-sdk                 | 2.1571.0 |
+|          | Webpack             | module bundler          | 5.92.1   |
 |          | IDE                 | Visual Studio Code      | 1.87.2   |
 | BackEnd  |                     |                         |          |
+| DB       | MySQL               | MySQL                   | 8.0.32   |
+|          |                     | JPA                     | \-       |
+|          |                     | QueryDSL                | 5.0.0    |
+|          | Java                | JDK                     | 17.0.4   |
+|          | Spring              | Spring Boot             | 2.7.5    |
+|          |                     | Spring Security         | 5.7.4    |
+|          | JWT                 | jjwt                    | 0.11.5   |
+|          | IDE                 | Intellij(Community)     | 23.3.5   |
+|          | Build               | Gradle                  | 8.0      |
+|          | API Docs            | OpenAPI(Swagger)        | 3.0.1    |
+|          | API Docs            | Postman                 | \-       |
 | Server   | Server              | AWS EC2                 | -        |
+|          | Deploy              | Docker                  | -        |
 </br>
 
 ## 🗂️ 시스템 아키텍처
@@ -137,13 +176,9 @@
 ![Search_List](https://github.com/Team-LOTD/LOTD/assets/93576045/bda6e80c-86fa-455d-950d-e6b8ad097162)
 </br>
 
-## 👥 협업 관리
-</br>
-
 ## 📆 프로젝트 기간
-### 23.12.27 ~ 진행 중
-- 기획 및 설계 : 23.12.27 ~ 24.01.20
-- 프로젝트 구현 : 24.01.15 ~ 진행 중
+### 23.12.27 ~ 24.07.05
+- 기획 및 설계 : 23.12.27 ~ 24.03.17
+- 프로젝트 구현 : 24.02.26 ~ 24.07.05
 </br>
 
-## 📋 프로젝트 관련 문서
