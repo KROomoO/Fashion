@@ -180,7 +180,7 @@
 ## 📺 시연 영상
 - 클릭 시 이동합니다!
 
-[![LOTD1](https://github.com/user-attachments/assets/47635e2c-ad5f-4edd-8c42-b92a69ae5938)](https://youtu.be/xCzBX4YhR_E)
+[![LOTD](https://github.com/user-attachments/assets/47635e2c-ad5f-4edd-8c42-b92a69ae5938)](https://youtu.be/xCzBX4YhR_E)
 
 ## 📆 프로젝트 기간
 ### 23.12.27 ~ 24.07.05
