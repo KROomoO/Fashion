@@ -5,7 +5,9 @@ const StyledMenu = styled.ul`
     background: #fff;
     border-radius: 8px;
     position: absolute;
-    top: 66px;
+    z-index: 1;
+    top: 56px;
+    right: -40px;
     width: 110px;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
     opacity: 0;
@@ -13,7 +15,6 @@ const StyledMenu = styled.ul`
     transform: translateY(-10px);
     transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
     padding: 10px;
-    margin-left: 58px;
     &.active {
         opacity: 1;
         visibility: visible;

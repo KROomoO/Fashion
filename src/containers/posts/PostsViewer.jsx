@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState, useCallback } from "react";
+import { useNavigate, useLocation, useOutletContext } from "react-router-dom";
 
 import { Viewer } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
@@ -10,6 +10,8 @@ import "tui-color-picker/dist/tui-color-picker.css";
 
 import { deletePosts, loadPosts } from "../../services/posts/posts";
 import Duration from "./Duration";
+
+import { Stack, TextField } from "@mui/material";
 
 import styled from "styled-components";
 import PostsViewerBox from "../../styles/components/posts/view/PostsViewerBox";
@@ -22,6 +24,10 @@ import PostsIcon from "../../styles/components/posts/view/PostsIcon";
 import PostsCount from "../../styles/components/posts/view/PostsCount";
 import PostsText from "../../styles/components/posts/view/PostsText";
 import PostsButton from "../../styles/components/posts/PostsButton";
+import { increaseHearts, decreaseHearts } from "../../services/posts/hearts";
+import { getJWTToken } from "../../utils/JWTToken";
+import CommentList from "./CommentList";
+import { handleSubmitComment } from "../../utils/saveComment";
 
 const UpdateButton = styled(PostsButton)`
     width: 100px !important;
@@ -30,26 +36,48 @@ const UpdateButton = styled(PostsButton)`
     background-color: #ffffff !important;
 `;
 
-const DeleteButton = styled(PostsButton)`
+const Button = styled(PostsButton)`
     width: 100px !important;
     margin-left: 10px;
 `;
 
+const PostsCommentTitle = styled.p`
+    height: 24px;
+    font-family: Pretendard;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+    text-align: left;
+    color: "#222222";
+    margin-bottom: 24px;
+`;
+
 const PostsViewer = () => {
     const [postValue, setPostValue] = useState({
-        categoryId: 0,
-        title: "",
-        memberId: "",
-        viewCount: 0,
-        date: "",
-        content: "",
-        likeCount: 0,
-        commentsCount: 0,
         postId: 0,
-        nickname: "",
+        categoryId: 0,
+        memberId: "",
+        title: "",
+        content: "",
+        image: "",
+        commentCount: 0,
+        heartCount: 0,
+        heartYn: "",
+        hits: "",
+        creator: "",
+        createdDate: "",
+        commentList: [],
     });
 
-    const [jwtToken, setJwtToken] = useState();
+    const [activeHeart, setActiveHeart] = useState(false);
+    const [memberId, setMemberId] = useState("");
+    const [commentValue, setCommentValue] = useState("");
+
+    const [categoryTextList, setCategoryTextList] = useState({});
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { categoryItem } = useOutletContext();
 
     const navigate = useNavigate();
 
@@ -62,36 +90,63 @@ const PostsViewer = () => {
 
     useEffect(() => {
         async function loadPostData() {
-            setJwtToken(JSON.parse(localStorage.getItem("jwt")));
+            const jwt = await getJWTToken();
 
-            try {
-                const response = await loadPosts(postId, categoryId);
-                console.log(response);
+            const response = await loadPosts(
+                postId,
+                categoryId,
+                !!jwt ? jwt.memberId : ""
+            );
+
+            if (!!response) {
                 setPostValue((prevState) => {
                     return {
                         ...prevState,
-                        categoryId: response.categoryId,
-                        title: response.title,
-                        memberId: response.memberId,
-                        viewCount: response.hits,
-                        date: response.createdDate,
-                        content: response.content,
-                        likeCount: response.likeCount,
-                        commentsCount: response.commentsCount,
                         postId: response.postId,
-                        nickname: response.creator,
+                        categoryId: response.categoryId,
+                        memberId: response.memberId,
+                        title: response.title,
+                        content: response.content,
+                        image: response.image,
+                        commentCount: response.commentCount,
+                        heartCount: response.heartCount,
+                        heartYn: response.heartYn,
+                        hits: response.hits,
+                        creator: response.creator,
+                        createdDate: response.createdDate,
+                        commentList: response.commentList.commentList,
                     };
                 });
-            } catch (error) {
-                console.log("Error searchPost");
+
+                setIsLoading(true);
+            }
+
+            if (!!jwt) {
+                setMemberId(jwt.memberId);
             }
         }
         loadPostData();
     }, [postId, categoryId]);
 
     useEffect(() => {
-        console.log(postValue.content);
+        if (categoryItem.length !== 0) {
+            const updatedCategoryText = {};
+            categoryItem.forEach((item) => {
+                updatedCategoryText[item.categoryId] = item.categoryName;
+            });
+            setCategoryTextList(updatedCategoryText);
+        }
+    }, [categoryItem]);
+
+    useEffect(() => {
+        if (postValue.heartYn === "Y") {
+            setActiveHeart(true);
+        }
     }, [postValue]);
+
+    const categoryText = (categoryId) => {
+        return categoryTextList[categoryId];
+    };
 
     const handleOnClickUpdate = () => {
         navigate(
@@ -103,106 +158,227 @@ const PostsViewer = () => {
         await deletePosts(postValue.postId);
     };
 
-    const categoryText = (categoryId) => {
-        const messages = {
-            1: "자유게시판",
-            2: "OOTD",
-            3: "패션",
-        };
-        return messages[categoryId];
+    const handleOnClickIncreaseHearts = async () => {
+        const response = await increaseHearts({
+            memberId: memberId,
+            postId: postValue.postId,
+        });
+        if (response) {
+            setActiveHeart(true);
+            setPostValue((prevState) => {
+                return {
+                    ...prevState,
+                    heartCount: postValue.heartCount + 1,
+                };
+            });
+        }
+    };
+
+    const handleOnClickDecreaseHearts = async () => {
+        const response = await decreaseHearts({
+            memberId: memberId,
+            postId: postValue.postId,
+        });
+        if (response) {
+            setActiveHeart(false);
+            setPostValue((prevState) => {
+                return {
+                    ...prevState,
+                    heartCount: postValue.heartCount - 1,
+                    heartYn: "N",
+                };
+            });
+        }
     };
 
     return (
         <>
-            <div style={{ width: "860px", margin: "36px auto 0px auto" }}>
-                <PostsViewerBox>
-                    <PostsCategoryTag>
-                        {categoryText(postValue.categoryId)}
-                    </PostsCategoryTag>
-                    <PostsTitle>{postValue.title}</PostsTitle>
-                    <PostsDataBox>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            <PostsProfileImg
-                                src={
-                                    process.env.PUBLIC_URL +
-                                    "/images/profile.png"
-                                }
-                                alt="ProfileImg"
-                            />
-                            <PostsProfileNickname>
-                                {postValue.nickname}
-                            </PostsProfileNickname>
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            <PostsIcon
-                                src={
-                                    process.env.PUBLIC_URL +
-                                    "/images/visibility.png"
-                                }
-                                alt="ViewCount"
-                            />
-                            <PostsCount>{postValue.viewCount}</PostsCount>
-                            <Duration date={postValue.date} />
-                        </div>
-                    </PostsDataBox>
-                    {postValue.content !== "" ? (
-                        <div style={{ minHeight: "500px" }}>
-                            <Viewer
-                                initialValue={postValue.content}
-                                plugin={[colorSyntax]}
-                            />
-                        </div>
-                    ) : null}
-                    <div style={{ display: "flex", marginBottom: "32px" }}>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            <PostsIcon
-                                src={
-                                    process.env.PUBLIC_URL + "/images/heart.png"
-                                }
-                                alt="CountLike"
-                            />
-                            <PostsText>좋아요</PostsText>
-                            <PostsCount>{postValue.likeCount}</PostsCount>
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                marginLeft: "16px",
+            {isLoading ? (
+                <>
+                    <div style={{ width: "860px", margin: "36px auto" }}>
+                        <PostsViewerBox>
+                            <PostsCategoryTag>
+                                {categoryText(postValue.categoryId)}
+                            </PostsCategoryTag>
+                            <PostsTitle>{postValue.title}</PostsTitle>
+                            <PostsDataBox>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <PostsProfileImg
+                                        src={
+                                            process.env.PUBLIC_URL +
+                                            "/images/profile.png"
+                                        }
+                                        alt="ProfileImg"
+                                    />
+                                    <PostsProfileNickname>
+                                        {postValue.creator}
+                                    </PostsProfileNickname>
+                                </div>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <PostsIcon
+                                        src={
+                                            process.env.PUBLIC_URL +
+                                            "/images/visibility.png"
+                                        }
+                                        alt="ViewCount"
+                                    />
+                                    <PostsCount>{postValue.hits}</PostsCount>
+                                    <Duration date={postValue.createdDate} />
+                                </div>
+                            </PostsDataBox>
+                            {postValue.content !== "" ? (
+                                <div style={{ minHeight: "500px" }}>
+                                    <Viewer
+                                        initialValue={postValue.content}
+                                        plugin={[colorSyntax]}
+                                    />
+                                </div>
+                            ) : null}
+                            <div
+                                style={{
+                                    display: "flex",
+                                    marginBottom: "32px",
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        cursor: "pointer",
+                                    }}
+                                    onClick={
+                                        activeHeart
+                                            ? handleOnClickDecreaseHearts
+                                            : handleOnClickIncreaseHearts
+                                    }
+                                >
+                                    {activeHeart ? (
+                                        <PostsIcon
+                                            src={
+                                                process.env.PUBLIC_URL +
+                                                "/images/active-heart.png"
+                                            }
+                                            alt="CountLike"
+                                        />
+                                    ) : (
+                                        <PostsIcon
+                                            src={
+                                                process.env.PUBLIC_URL +
+                                                "/images/heart.png"
+                                            }
+                                            alt="CountLike"
+                                        />
+                                    )}
+                                    <PostsText>좋아요</PostsText>
+                                    <PostsCount>
+                                        {postValue.heartCount}
+                                    </PostsCount>
+                                </div>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        marginLeft: "16px",
+                                    }}
+                                >
+                                    <PostsIcon
+                                        src={
+                                            process.env.PUBLIC_URL +
+                                            "/images/message.png"
+                                        }
+                                        alt="CountMessage"
+                                    />
+                                    <PostsText>댓글</PostsText>
+                                    <PostsCount>
+                                        {postValue.commentCount}
+                                    </PostsCount>
+                                </div>
+                            </div>
+                        </PostsViewerBox>
+                        {!!memberId ? (
+                            memberId !== postValue.memberId ? null : (
+                                <div
+                                    style={{
+                                        marginTop: "16px",
+                                        width: "100%",
+                                        display: "flex",
+                                        justifyContent: "right",
+                                    }}
+                                >
+                                    <UpdateButton onClick={handleOnClickUpdate}>
+                                        수정하기
+                                    </UpdateButton>
+                                    <Button onClick={handleOnClickDelete}>
+                                        삭제하기
+                                    </Button>
+                                </div>
+                            )
+                        ) : null}
+                    </div>
+                    <div
+                        style={{
+                            width: "860px",
+                            margin: "0px auto",
+                        }}
+                    >
+                        <PostsCommentTitle>
+                            댓글 {postValue.commentCount}
+                        </PostsCommentTitle>
+                        <Stack
+                            sx={{
+                                width: "100%",
                             }}
                         >
-                            <PostsIcon
-                                src={
-                                    process.env.PUBLIC_URL +
-                                    "/images/message.png"
+                            <TextField
+                                hiddenLabel
+                                variant="outlined"
+                                placeholder="댓글을 작성해주세요"
+                                multiline
+                                rows={4}
+                                fullWidth
+                                onChange={(e) =>
+                                    setCommentValue(e.target.value)
                                 }
-                                alt="CountMessage"
                             />
-                            <PostsText>댓글</PostsText>
-                            <PostsCount>{postValue.commentsCount}</PostsCount>
-                        </div>
-                    </div>
-                </PostsViewerBox>
-                {!!jwtToken ? (
-                    jwtToken.memberId !== postValue.memberId ? null : (
+                        </Stack>
                         <div
                             style={{
-                                marginTop: "16px",
                                 width: "100%",
                                 display: "flex",
-                                justifyContent: "right",
+                                justifyContent: "end",
+                                marginTop: "16px",
                             }}
                         >
-                            <UpdateButton onClick={handleOnClickUpdate}>
-                                수정하기
-                            </UpdateButton>
-                            <DeleteButton onClick={handleOnClickDelete}>
-                                삭제하기
-                            </DeleteButton>
+                            <Button
+                                onClick={() =>
+                                    handleSubmitComment({
+                                        content: commentValue,
+                                        postId: postId,
+                                        memberId: memberId,
+                                        parentCommentId: null,
+                                    })
+                                }
+                            >
+                                댓글 등록
+                            </Button>
                         </div>
-                    )
-                ) : null}
-            </div>
+                        <CommentList
+                            commentList={postValue.commentList}
+                            postId={postValue.postId}
+                        ></CommentList>
+                    </div>
+                </>
+            ) : null}
         </>
     );
 };

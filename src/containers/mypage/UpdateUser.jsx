@@ -29,6 +29,7 @@ import {
     updateNickname,
     updatePassword,
 } from "../../services/mypage/update";
+import { useParams } from "react-router-dom";
 
 const UpdateProfileEditImg = styled.img`
     width: 17.25px;
@@ -94,7 +95,6 @@ const PopUpItem = ({ item, socialType, onHandleClosePopUp }) => {
     };
 
     const handleCheckNickname = async () => {
-        console.log("aa");
         const response = await checkNickname(nickname);
         setDuplicateNickname(response);
     };
@@ -336,6 +336,9 @@ const UpdateUser = () => {
         nickname: "",
         socialType: "",
     });
+    const [isLogin, setIsLogin] = useState(false);
+
+    const { id } = useParams();
 
     const handleUpdateUserClick = (item) => {
         setBlur("block");
@@ -348,8 +351,8 @@ const UpdateUser = () => {
 
     useEffect(() => {
         async function getUserInfo() {
-            const response = await searchUser();
-            if (response !== null) {
+            const response = await searchUser(id);
+            if (!!response) {
                 setUserInfo((prevState) => {
                     return {
                         ...prevState,
@@ -359,71 +362,66 @@ const UpdateUser = () => {
                         socialType: response.socialType,
                     };
                 });
+                setIsLogin(true);
+            } else {
+                alert("회원정보가 없습니다. 로그인 후 이용해주세요");
+                window.location.replace("/login");
             }
         }
         getUserInfo();
-    }, []);
+    }, [id]);
 
     return (
         <>
-            <UpdateProfileBlur
-                style={{ display: blur }}
-                onClick={() => handleClosePopUp("none")}
-            />
-            <PopUpBox style={{ display: blur }}>
-                {clickItem === "" ? null : (
-                    <PopUpItem
-                        item={clickItem}
-                        socialType={
-                            userInfo.socialType !== "" &&
-                            userInfo.socialType !== null
-                                ? true
-                                : false
-                        }
-                        onHandleClosePopUp={handleClosePopUp}
-                    ></PopUpItem>
-                )}
-            </PopUpBox>
-            <UpdateProfileBox>
-                <UpdateProfileImg
-                    src={process.env.PUBLIC_URL + "/images/profile-sample.jpg"}
-                    alt="ProfileImg"
-                />
-                <UpdateProfileEditBtn>
-                    <UpdateProfileEditImg
-                        src={
-                            process.env.PUBLIC_URL +
-                            "/images/profile-edit-img.png"
-                        }
-                        alt="profile-edit-img"
-                    />
-                </UpdateProfileEditBtn>
-            </UpdateProfileBox>
-            <UpdateUserBox>
-                <UpdateUserSpan>아이디</UpdateUserSpan>
-                <UpdateUserSpan>{userInfo.memberId}</UpdateUserSpan>
-            </UpdateUserBox>
-            <UpdateUserHr />
-            <UpdateUserBox>
-                <UpdateUserSpan>이메일</UpdateUserSpan>
-                <UpdateUserDiv onClick={() => handleUpdateUserClick("email")}>
-                    <UpdateUserSpan>{userInfo.email}</UpdateUserSpan>
-                    <ArrorwRight
-                        src={process.env.PUBLIC_URL + "/images/arrow-right.png"}
-                        alt="userInfoEditBtn"
-                    />
-                </UpdateUserDiv>
-            </UpdateUserBox>
-            <UpdateUserHr />
-            {userInfo.socialType !== null &&
-            userInfo.socialType !== "" ? null : (
+            {isLogin ? (
                 <>
+                    <UpdateProfileBlur
+                        style={{ display: blur }}
+                        onClick={() => handleClosePopUp("none")}
+                    />
+                    <PopUpBox style={{ display: blur }}>
+                        {clickItem === "" ? null : (
+                            <PopUpItem
+                                item={clickItem}
+                                socialType={
+                                    userInfo.socialType !== "" &&
+                                    userInfo.socialType !== null
+                                        ? true
+                                        : false
+                                }
+                                onHandleClosePopUp={handleClosePopUp}
+                            ></PopUpItem>
+                        )}
+                    </PopUpBox>
+                    <UpdateProfileBox>
+                        <UpdateProfileImg
+                            src={
+                                process.env.PUBLIC_URL +
+                                "/images/profile-sample.jpg"
+                            }
+                            alt="ProfileImg"
+                        />
+                        <UpdateProfileEditBtn>
+                            <UpdateProfileEditImg
+                                src={
+                                    process.env.PUBLIC_URL +
+                                    "/images/profile-edit-img.png"
+                                }
+                                alt="profile-edit-img"
+                            />
+                        </UpdateProfileEditBtn>
+                    </UpdateProfileBox>
                     <UpdateUserBox>
-                        <UpdateUserSpan>비밀번호</UpdateUserSpan>
+                        <UpdateUserSpan>아이디</UpdateUserSpan>
+                        <UpdateUserSpan>{userInfo.memberId}</UpdateUserSpan>
+                    </UpdateUserBox>
+                    <UpdateUserHr />
+                    <UpdateUserBox>
+                        <UpdateUserSpan>이메일</UpdateUserSpan>
                         <UpdateUserDiv
-                            onClick={() => handleUpdateUserClick("password")}
+                            onClick={() => handleUpdateUserClick("email")}
                         >
-                            <UpdateUserSpan>*********</UpdateUserSpan>
+                            <UpdateUserSpan>{userInfo.email}</UpdateUserSpan>
                             <ArrorwRight
                                 src={
                                     process.env.PUBLIC_URL +
@@ -434,35 +432,64 @@ const UpdateUser = () => {
                         </UpdateUserDiv>
                     </UpdateUserBox>
                     <UpdateUserHr />
+                    {userInfo.socialType !== null &&
+                    userInfo.socialType !== "" ? null : (
+                        <>
+                            <UpdateUserBox>
+                                <UpdateUserSpan>비밀번호</UpdateUserSpan>
+                                <UpdateUserDiv
+                                    onClick={() =>
+                                        handleUpdateUserClick("password")
+                                    }
+                                >
+                                    <UpdateUserSpan>*********</UpdateUserSpan>
+                                    <ArrorwRight
+                                        src={
+                                            process.env.PUBLIC_URL +
+                                            "/images/arrow-right.png"
+                                        }
+                                        alt="userInfoEditBtn"
+                                    />
+                                </UpdateUserDiv>
+                            </UpdateUserBox>
+                            <UpdateUserHr />
+                        </>
+                    )}
+                    <UpdateUserBox>
+                        <UpdateUserSpan>닉네임</UpdateUserSpan>
+                        <UpdateUserDiv
+                            onClick={() => handleUpdateUserClick("nickname")}
+                        >
+                            <UpdateUserSpan>
+                                {userInfo ? userInfo.nickname : null}
+                            </UpdateUserSpan>
+                            <ArrorwRight
+                                src={
+                                    process.env.PUBLIC_URL +
+                                    "/images/arrow-right.png"
+                                }
+                                alt="userInfoEditBtn"
+                            />
+                        </UpdateUserDiv>
+                    </UpdateUserBox>
+                    <UpdateUserHr />
+                    <UpdateUserBox>
+                        <UpdateUserSpan>회원 탈퇴</UpdateUserSpan>
+                        <UpdateUserDiv
+                            style={{ width: "80px", justifyContent: "right" }}
+                            onClick={() => handleUpdateUserClick("delete")}
+                        >
+                            <ArrorwRight
+                                src={
+                                    process.env.PUBLIC_URL +
+                                    "/images/arrow-right.png"
+                                }
+                                alt="userInfoEditBtn"
+                            />
+                        </UpdateUserDiv>
+                    </UpdateUserBox>
                 </>
-            )}
-            <UpdateUserBox>
-                <UpdateUserSpan>닉네임</UpdateUserSpan>
-                <UpdateUserDiv
-                    onClick={() => handleUpdateUserClick("nickname")}
-                >
-                    <UpdateUserSpan>
-                        {userInfo ? userInfo.nickname : null}
-                    </UpdateUserSpan>
-                    <ArrorwRight
-                        src={process.env.PUBLIC_URL + "/images/arrow-right.png"}
-                        alt="userInfoEditBtn"
-                    />
-                </UpdateUserDiv>
-            </UpdateUserBox>
-            <UpdateUserHr />
-            <UpdateUserBox>
-                <UpdateUserSpan>회원 탈퇴</UpdateUserSpan>
-                <UpdateUserDiv
-                    style={{ width: "80px", justifyContent: "right" }}
-                    onClick={() => handleUpdateUserClick("delete")}
-                >
-                    <ArrorwRight
-                        src={process.env.PUBLIC_URL + "/images/arrow-right.png"}
-                        alt="userInfoEditBtn"
-                    />
-                </UpdateUserDiv>
-            </UpdateUserBox>
+            ) : null}
         </>
     );
 };

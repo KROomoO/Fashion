@@ -1,162 +1,139 @@
-import Axios from "axios";
+import apiClient from "../apiClient";
 
 const jwtToken = JSON.parse(localStorage.getItem("jwt"));
 
-export const searchUser = async () => {
-    if (!jwtToken) {
-        alert("잘못된 접근입니다. 로그인 후 이용해주세요");
-        window.location.href = "/login";
-    }
+export const searchUser = async (memberId) => {
     try {
-        const response = await Axios.get("/api/members", {
-            headers: {
-                Authorization: `Bearer ${jwtToken.accessToken}`,
-                "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-            },
+        const config = {
             params: {
-                member_id: jwtToken.memberId,
+                member_id: memberId,
             },
-        });
+        };
+        const response = await apiClient.get("/api/members", config);
+
         return response.data.data;
     } catch (error) {
-        console.log("Error searchUser data");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        }
+        console.log("Error searchUser response");
     }
 };
 
 export const updateEmail = async (email) => {
-    console.log(email);
     try {
-        await Axios.put(
-            "/api/members/emails",
-            { email: email },
-            {
-                headers: {
-                    Authorization: `Bearer ${jwtToken.accessToken}`,
-                    "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-                },
+        if (
+            window.confirm(`정말 변경하시겠습니까?\n변경 이메일 : ${email}`) ===
+            true
+        ) {
+            const config = {
                 params: {
                     member_id: jwtToken.memberId,
                 },
-            }
-        );
-        window.location.replace(`/members/${jwtToken.memberId}`);
-    } catch (error) {
-        console.log("Error updateEmail");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+            };
+            await apiClient.put(
+                "/api/members/emails",
+                { email: email },
+                config
+            );
+
+            window.location.replace(`/members/${jwtToken.memberId}`);
+        } else {
+            window.location.replace(`/members/${jwtToken.memberId}`);
         }
+    } catch (error) {
+        console.log("Error updateEmail response");
     }
 };
 
 export const updateNickname = async (nickname) => {
     try {
-        await Axios.put(
-            "/api/members/nicknames",
-            { nickname: nickname },
-            {
-                headers: {
-                    Authorization: `Bearer ${jwtToken.accessToken}`,
-                    "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-                },
+        if (
+            window.confirm(
+                `정말 변경하시겠습니까?\n변경 닉네임 : ${nickname}`
+            ) === true
+        ) {
+            const config = {
                 params: {
                     member_id: jwtToken.memberId,
                 },
-            }
-        );
-        window.location.replace(`/members/${jwtToken.memberId}`);
-    } catch (error) {
-        console.log("Error updateNickname");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+            };
+            await apiClient.put(
+                "/api/members/nicknames",
+                { nickname: nickname },
+                config
+            );
+
+            window.location.replace(`/members/${jwtToken.memberId}`);
+        } else {
+            window.location.replace(`/members/${jwtToken.memberId}`);
         }
+    } catch (error) {
+        console.log("Error updateNickname response");
     }
 };
 
 export const updatePassword = async (password) => {
     try {
-        console.log(password);
-        await Axios.put(
-            "/api/members/passwords",
-            {
-                asIsPassword: password.asIsPassword,
-                toBePassword: password.toBePassword,
-                confirmToBePassword: password.confirmToBePassword,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${jwtToken.accessToken}`,
-                    "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-                },
+        if (window.confirm("정말 변경하시겠습니까?") === true) {
+            const config = {
                 params: {
                     member_id: jwtToken.memberId,
                 },
-            }
-        );
-        window.location.replace(`/members/${jwtToken.memberId}`);
-    } catch (error) {
-        console.log("Error updatePassword");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+            };
+            await apiClient.put(
+                "/api/members/passwords",
+                {
+                    asIsPassword: password.asIsPassword,
+                    toBePassword: password.toBePassword,
+                    confirmToBePassword: password.confirmToBePassword,
+                },
+                config
+            );
+
+            window.location.replace(`/members/${jwtToken.memberId}`);
+        } else {
+            window.location.replace(`/members/${jwtToken.memberId}`);
         }
+    } catch (error) {
+        console.log("Error updatePassword response");
     }
 };
 
 export const deleteUser = async (password) => {
     try {
-        await Axios.delete("/api/members", {
-            headers: {
-                Authorization: `Bearer ${jwtToken.accessToken}`,
-                "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-            },
-            params: {
-                member_id: jwtToken.memberId,
-            },
-            data: {
-                password: password,
-            },
-        });
-        localStorage.removeItem("jwt");
-        window.location.replace("/");
-    } catch (error) {
-        console.log("Error DeletePassword");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+        if (window.confirm("정말 삭제하시겠습니까?") === true) {
+            const config = {
+                params: {
+                    member_id: jwtToken.memberId,
+                },
+                data: {
+                    password: password,
+                },
+            };
+            await apiClient.delete("/api/members", config);
+            localStorage.removeItem("jwt");
+            window.location.replace("/");
+        } else {
+            window.location.replace(`/members/${jwtToken.memberId}`);
         }
+    } catch (error) {
+        console.log("Error deleteUser response");
     }
 };
 
 export const deleteSocialUser = async () => {
     try {
-        await Axios.delete("/api/social-members", {
-            headers: {
-                Authorization: `Bearer ${jwtToken.accessToken}`,
-                "Authorization-refresh": `Bearer ${jwtToken.refreshToken}`,
-            },
-            params: {
-                member_id: jwtToken.memberId,
-            },
-        });
-        localStorage.removeItem("jwt");
-        window.location.replace("/");
-    } catch (error) {
-        console.log("Error DeletePassword");
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+        if (window.confirm("정말 삭제하시겠습니까?") === true) {
+            const config = {
+                params: {
+                    member_id: jwtToken.memberId,
+                },
+            };
+            await apiClient.delete("/api/social-members", config);
+            localStorage.removeItem("jwt");
+            window.location.replace("/");
+        } else {
+            window.location.replace(`/members/${jwtToken.memberId}`);
         }
+    } catch (error) {
+        console.log("Error deleteSocialUser response");
     }
 };

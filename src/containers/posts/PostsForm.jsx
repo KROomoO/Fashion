@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import Axios from "axios";
 
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/toastui-editor.css";
@@ -14,12 +15,16 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 import { uploadImageFile } from "../../services/posts/testS3";
-import { savePosts, updatePosts } from "../../services/posts/posts";
+import {
+    getImageURI,
+    savePosts,
+    updatePosts,
+} from "../../services/posts/posts";
 
 import { PostsFormBox } from "../../styles/components/posts/PostsFormBox";
 import { PostsInput } from "../../styles/components/posts/PostsInput";
 import PostsButton from "../../styles/components/posts/PostsButton";
-import { POstsControlBox } from "../../styles/components/posts/PostsControlBox";
+import { PostsControlBox } from "../../styles/components/posts/PostsControlBox";
 import { PostsBackImg } from "../../styles/components/posts/PostsBackImg";
 
 // const CONTENT_KEY = "CONTENT_KEY";
@@ -30,6 +35,9 @@ const PostsForm = ({ postData }) => {
     const [category, setCategory] = useState("");
     const [title, setTitle] = useState("");
     const [imageURL, setImageURL] = useState("");
+    const [categoryMenu, setCategoryMenu] = useState([]);
+
+    const { categoryItem } = useOutletContext();
 
     const editRef = useRef(null);
 
@@ -49,55 +57,59 @@ const PostsForm = ({ postData }) => {
     //     editRef.current.getInstance().setMarkdown("");
     // };
 
+    useEffect(() => {
+        if (categoryItem.length !== 0) {
+            const copyItem = categoryItem.filter(
+                (element) => element.categoryName !== "전체글"
+            );
+            setCategoryMenu(copyItem);
+        }
+    }, [categoryItem]);
+
     const handleSubmitPost = async () => {
         const submitData = {
             title: title,
-            image: "testURL",
-            // image: imageURL,
-            content: editRef.current.getInstance().getMarkdown(),
-            categoryId: category,
+            image: imageURL,
+            content: editRef.current.getInstance().getHTML(),
+            categoryId: Number(category),
         };
-        console.log(submitData);
         if (category === "") {
-            alert("카테고리 선택");
+            alert("카테고리를 선택해주세요");
         } else if (title === "") {
-            alert("타이틀 입력");
-        } else if (editRef.current.getInstance().getMarkdown().length <= 0) {
-            alert("본문 입력");
+            alert("제목을 입력해주세요");
+        } else if (editRef.current.getInstance().getHTML().length <= 0) {
+            alert("본문을 입력해주세요");
         } else {
             if (postData && Object.keys(postData).length !== 0) {
-                const response = await updatePosts({
+                await updatePosts({
                     ...submitData,
                     post_id: postData.post_id,
+                    category_id: category,
                 });
-                console.log(response);
             } else {
-                const response = await savePosts(submitData);
-                console.log(response);
+                await savePosts(submitData);
             }
         }
-        console.log("aa");
     };
 
     useEffect(() => {
         if (postData && Object.keys(postData).length !== 0) {
             setCategory(postData.category_id);
             setTitle(postData.title);
-            editRef.current.getInstance().setMarkdown(postData.content);
+            editRef.current.getInstance().setHTML(postData.content);
         }
-        console.log(postData);
     }, [postData]);
 
     return (
         <>
-            <POstsControlBox>
+            <PostsControlBox>
                 <PostsBackImg
                     src={process.env.PUBLIC_URL + "/images/arrow-right.png"}
                     alt="navigateBack"
                     onClick={() => navigate(-1)}
                 />
                 <PostsButton onClick={handleSubmitPost}>등록하기</PostsButton>
-            </POstsControlBox>
+            </PostsControlBox>
 
             <PostsFormBox>
                 <div
@@ -122,9 +134,16 @@ const PostsForm = ({ postData }) => {
                                 },
                             }}
                         >
-                            <MenuItem value={1}>자유게시판</MenuItem>
-                            <MenuItem value={2}>OOTD</MenuItem>
-                            <MenuItem value={3}>패션</MenuItem>
+                            {categoryMenu.map((item, index) => {
+                                return (
+                                    <MenuItem
+                                        key={index}
+                                        value={item.categoryId}
+                                    >
+                                        {item.categoryName}
+                                    </MenuItem>
+                                );
+                            })}
                         </Select>
                     </FormControl>
                     <PostsInput
@@ -143,25 +162,30 @@ const PostsForm = ({ postData }) => {
                     language="ko-KR"
                     useCommandShortcut={false}
                     usageStatistics={false}
+                    hideModeSwitch={true}
+                    imageSizeEditing={true}
                     plugins={[colorSyntax]}
                     hooks={{
                         addImageBlobHook: async (blob, callback) => {
-                            console.log(blob);
-                            console.log(blob.size);
-                            const file = new File(
-                                [blob],
-                                encodeURI(blob.name),
-                                {
-                                    type: blob.type,
-                                }
-                            );
-                            console.log(file);
-                            const responseURL = await uploadImageFile(file);
-                            if (imageURL === "") {
-                                setImageURL(responseURL);
-                            }
-                            console.log(responseURL);
-                            callback(responseURL);
+                            // console.log(blob.type);
+                            // const file = new File(
+                            //     [blob],
+                            //     encodeURI(blob.name),
+                            //     {
+                            //         type: blob.type,
+                            //     }
+                            // );
+                            // console.log(file);
+                            // const formData = new FormData();
+                            // formData.append("image", file);
+                            // const response = await getImageURI(formData);
+                            // console.log(response);
+                            // if (imageURL === "") {
+                            //     setImageURL(response);
+                            // }
+                            // const src = URL.createObjectURL(file); // 이미지 업로드 api 구현 시 src는 서버 image url response로 변경 및 setImageURL 배열로 변경후 입력받는 src 마다 배열에 push
+                            alert("이미지 업로드 추후 구현 예정");
+                            // callback(src);
                         },
                     }}
                 />

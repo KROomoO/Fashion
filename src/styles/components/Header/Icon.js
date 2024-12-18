@@ -3,6 +3,7 @@ import styled from "styled-components";
 const StyledIcon = styled.img`
     width: 32px;
     height: 32px;
+    margin-left: 80px;
     cursor: pointer;
 `;
 

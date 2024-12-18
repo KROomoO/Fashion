@@ -14,6 +14,7 @@ const StyledLoginButton = styled.button`
     background-color: #ffffff;
     padding: 13px, 20px, 13px, 20px;
     border: none;
+    margin-left: 33px;
     cursor: pointer;
     &:hover {
         background-color: #f8f8f8;

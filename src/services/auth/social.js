@@ -11,8 +11,6 @@ export const NaverLogin = () => {
     const redirect_uri = process.env.REACT_APP_NAVER_REDIRECT_URI;
     const naverURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}`;
 
-    console.log(naverURL);
-
     return (window.location.href = naverURL);
 };
 
@@ -21,7 +19,7 @@ export const GoogleLogin = () => {
     const redirect_uri = process.env.REACT_APP_GOOGLE_REDIRECT_URI;
     const scope = process.env.REACT_APP_GOOGLE_SCOPE;
     const accessType = process.env.REACT_APP_GOOGLE_ACCESSTYPE;
-    const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&scope=${scope}&response_type=code&access_type=${accessType}`;
+    const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&scope=${scope}&response_type=code`;
 
     return (window.location.href = googleURL);
 };

@@ -22,6 +22,7 @@ const PostsButton = (props) => {
             className={props.className}
             onClick={props.onClick}
             style={props.style}
+            type={props.type}
         >
             {props.children}
         </StyledPostsButton>

@@ -13,7 +13,7 @@ const KakaoRedirect = () => {
     useEffect(() => {
         async function SendKakaoAuthCode() {
             const userInfo = await sendKakaoAuthCode(code);
-            console.log(userInfo);
+
             if (userInfo === "onExists") {
                 window.location.replace("/");
             } else {

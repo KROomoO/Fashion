@@ -20,7 +20,6 @@ const GoogleRedirect = () => {
                 const sendUserInfo = {
                     memberId: userInfo.googleMemberId,
                     email: userInfo.email,
-                    socialType: userInfo.socialType,
                 };
                 navigate("/members/addinfo", {
                     state: {

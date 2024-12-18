@@ -13,11 +13,9 @@ const NaverRedirect = () => {
     useEffect(() => {
         async function SendNaverAuthCode() {
             const userInfo = await sendNaverAuthCode(code);
-            console.log(userInfo);
             if (userInfo === "onExists") {
                 window.location.replace("/");
             } else {
-                console.log(userInfo);
                 const sendUserInfo = {
                     memberId: userInfo.naverMemberId,
                     email: userInfo.email,
