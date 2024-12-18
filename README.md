@@ -7,34 +7,13 @@
 2. [프로젝트 개요](#-프로젝트-개요)
 3. [기술 스택 및 버전](#-기술-스택)
 4. [주요 기능]
-5. [개발 멤버]
+5. [개발 멤버](#-개발-멤버)
 </br>
 
 ## 📺 시연 영상
 
 #### 아래의 사진을 클릭하여 시연 영상을 통해 LOTD의 주요기능과 UI를 확인해 보세요!
 [![LOTD](https://github.com/user-attachments/assets/47635e2c-ad5f-4edd-8c42-b92a69ae5938)](https://youtu.be/xCzBX4YhR_E)
-</br>
-
-## 👪 개발 멤버 소개
-<p align="center">
-  <table>
-      <tr>
-        <td>
-          <img src="https://github.com/Team-LOTD/frontend/assets/93576045/a2034775-6a0f-4ace-afdd-e86c22978b9e" width="120px" height="120px" />
-        </td>
-        <td>
-          <img src="https://github.com/Team-LOTD/frontend/assets/73388615/1fe2a4f3-b108-424b-b8e1-9c304320233c" width="120px" height="120px" />
-        </td>
-      </tr>
-      <tr>
-          <td height="30px" width="120px" align="center"> <a href="https://github.com/KROomoO">
-          🙂 박성익 <br>(Front-End) </a> <br></td>
-          <td height="30px" width="120px" align="center"> <a href="https://github.com/JaesungYoun">
-          🙂 윤재성 <br>(Back-End) </a> <br></td>
-      </tr>
-  </table>
-</p>
 </br>
 
 ## 📄 프로젝트 개요
@@ -71,6 +50,7 @@ LOTD 프로젝트를 통해 우리는 현대적인 인터페이스를 반영하�
 ![Styled Components](https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 ![Webpack](https://img.shields.io/badge/webpack-%238DD6F9.svg?style=for-the-badge&logo=webpack&logoColor=black)
+![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
 </br>
 
 ### BackEnd
@@ -125,10 +105,7 @@ LOTD 프로젝트를 통해 우리는 현대적인 인터페이스를 반영하�
 |          | Deploy              | Docker                  | -        |
 </br>
 
-## 🗂️ 시스템 아키텍처
-</br>
-
-## 🖥️ 주요기능
+## 💻 프로젝트 주요기능
 
 ### 로그인
 - 아이디와 비밀번호를 이용하여 로그인할 수 있습니다.
@@ -198,11 +175,23 @@ LOTD 프로젝트를 통해 우리는 현대적인 인터페이스를 반영하�
 ![Search_List](https://github.com/Team-LOTD/LOTD/assets/93576045/bda6e80c-86fa-455d-950d-e6b8ad097162)
 </br>
 
-
-
-## 📆 프로젝트 기간
-### 23.12.27 ~ 24.07.05
-- 기획 및 설계 : 23.12.27 ~ 24.03.17
-- 프로젝트 구현 : 24.02.26 ~ 24.07.05
+## 👪 개발 멤버
+<p align="center">
+  <table>
+      <tr>
+        <td>
+          <img src="https://github.com/Team-LOTD/frontend/assets/93576045/a2034775-6a0f-4ace-afdd-e86c22978b9e" width="120px" height="120px" />
+        </td>
+        <td>
+          <img src="https://github.com/Team-LOTD/frontend/assets/73388615/1fe2a4f3-b108-424b-b8e1-9c304320233c" width="120px" height="120px" />
+        </td>
+      </tr>
+      <tr>
+          <td height="30px" width="120px" align="center"> <a href="https://github.com/KROomoO">
+          🙂 박성익 <br>(Front-End) </a> <br></td>
+          <td height="30px" width="120px" align="center"> <a href="https://github.com/JaesungYoun">
+          🙂 윤재성 <br>(Back-End) </a> <br></td>
+      </tr>
+  </table>
+</p>
 </br>
-
