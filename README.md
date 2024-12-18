@@ -59,7 +59,7 @@ LOTD는 "Look Of The Day"의 약자로, 패션 애호가들이 모여 영감을 
 LOTD 프로젝트를 통해 우리는 현대적인 인터페이스를 반영하여 사용자 친화적인 플랫폼을 만들기 위해 노력하고 있습니다.
 </br>
 
-## 🛠️ 기술 스택
+## 🛠 기술 스택
 
 ### FrontEnd
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
