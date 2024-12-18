@@ -2,14 +2,18 @@
   <img src="https://github.com/Team-LOTD/frontend/assets/93576045/25dee207-62b8-4eb1-a68d-794697e636b2"/>
 </p>
 
-## 목차
-1. 개발 멤버 소개
-2. 서비스 소개
-3. 기술 스택
-4. 시스템 아키텍처
-5. 주요 기능
-6. 시연 영상
-7. 프로젝트 기간
+## 📋 목차
+1. [시연 영상](#-시연-영상)
+2. [프로젝트 개요](#-프로젝트-개요)
+3. [기술 스택 및 버전](#-기술-스택)
+4. [주요 기능]
+5. [개발 멤버]
+</br>
+
+## 📺 시연 영상
+
+#### 아래의 사진을 클릭하여 시연 영상을 통해 LOTD의 주요기능과 UI를 확인해 보세요!
+[![LOTD](https://github.com/user-attachments/assets/47635e2c-ad5f-4edd-8c42-b92a69ae5938)](https://youtu.be/xCzBX4YhR_E)
 </br>
 
 ## 👪 개발 멤버 소개
@@ -33,12 +37,26 @@
 </p>
 </br>
 
-## 💡 서비스 소개
-패션 커뮤니티 웹 애플리케이션
->LOTD는 "Look Of The Day"의 약자로, 패션 커뮤니티를 위한 웹 애플리케이션입니다.</br>
->LOTD는 사용자들이 일상 속 패션을 공유하고, 옷 스타일에 대한 의견을 교환할 수 있는 플랫폼을 제공합니다.
+## 📄 프로젝트 개요
+### ✅ 어떤 서비스인가요?
+#### 📌 패션 커뮤니티 웹 애플리케이션
+LOTD는 "Look Of The Day"의 약자로, 패션 애호가들이 모여 영감을 주고받는 디지털 런웨이입니다.
+
+사용자들이 오늘의 패션을 공유하고, 스타일에 대한 의견을 교환할 수 있는 플랫폼을 제공합니다.
 
 당신의 하루를 공유해주세요!
+
+### ✅ 왜 만들었나요?
+#### 📌 패션 애호가들을 위한 새로운 소통 공간
+
+팀 프로젝트 경험을 쌓고 실용적인 웹 애플리케이션을 개발하고자 LOTD 프로젝트를 시작하게 되었습니다.
+
+  1. 미디어에 자주 등장하는 'OOTD'(Outfit Of The Day) 트렌드에 착안하여 패션 커뮤니티의 필요성을 인식했습니다. 이를 바탕으로 'LOTD'(Look Of The Day)라는 컨셉의 패션 공유 플랫폼을 기획하게 되었습니다.
+  2. 기존의 패션 관련 커뮤니티와 애플리케이션들을 분석한 결과, 사용자 경험과 디자인 측면에서 개선의 여지가 있다고 판단했습니다. 이에 따라 우리만의 깔끔하고 직관적인 인터페이스를 가진 웹 애플리케이션을 개발하기로 결정했습니다.
+  3. LOTD 프로젝트를 통해 패션 애호가들이 자신의 스타일을 쉽게 공유하고, 다른 사용자들과 활발히 소통할 수 있는 플랫폼을 제공하고자 합니다. 이는 단순한 패션 공유를 넘어 사용자들 간의 창의적인 아이디어 교류와 영감을 촉진하는 공간이 될 것입니다.
+  4. 이 프로젝트를 통해 팀원 각자의 기술적 역량을 향상시키고, 실제 사용자들의 니즈를 충족시키는 서비스를 개발하는 경험을 쌓고자 프로젝트를 개발하게 되었습니다.
+
+LOTD 프로젝트를 통해 우리는 현대적인 인터페이스를 반영하여 사용자 친화적인 플랫폼을 만들기 위해 노력하고 있습니다.
 </br>
 
 ## 🛠️ 기술 스택
@@ -76,18 +94,21 @@
 |          | 커뮤니케이션         | Notion, Slack, KakaoTalk| -        |
 | FrontEnd | JavaScript(ES6)     | -                       | -        |
 |          | React               | react                   | 17.0.2   |
-|          | React               | react-dom               | 17.0.2   |
-|          | React               | react-router-dom        | 6.21.1   |
-|          | React               | react-hook-form         | 7.49.2   |
+|          |                     | react-dom               | 17.0.2   |
+|          |                     | react-router-dom        | 6.21.1   |
+|          |                     | react-hook-form         | 7.49.2   |
 |          | Axios               | axios                   | 1.6.5    |
 |          | Styled-Components   | styled-compoenents      | 6.1.8    |
 |          | Mui                 | mui                     | 5.15.12  |
 |          | Toast-ui            | toast-ui/react-deitor   | 3.2.3    |
-|          | Toast-ui            | toast-ui/editor-plugin-color-syntax | 3.1.0   |
+|          |                     | toast-ui/editor-plugin-color-syntax | 3.1.0   |
 |          | Moment              | moment                  | 2.30.1   |
 |          | AWS S3              | aws-sdk                 | 2.1571.0 |
-|          | Webpack             | module bundler          | 5.92.1   |
+|          | Builder             | Webpack                 | 5.92.1   |
 |          | IDE                 | Visual Studio Code      | 1.87.2   |
+| Design Tool | Figma            | -                       | Web-based|
+| Server   | Server              | AWS EC2                 | -        |
+|          | Deploy              | Nginx                   | -        |
 | BackEnd  |                     |                         |          |
 | DB       | MySQL               | MySQL                   | 8.0.32   |
 |          |                     | JPA                     | \-       |
@@ -177,10 +198,7 @@
 ![Search_List](https://github.com/Team-LOTD/LOTD/assets/93576045/bda6e80c-86fa-455d-950d-e6b8ad097162)
 </br>
 
-## 📺 시연 영상
-- 클릭 시 이동합니다!
 
-[![LOTD](https://github.com/user-attachments/assets/47635e2c-ad5f-4edd-8c42-b92a69ae5938)](https://youtu.be/xCzBX4YhR_E)
 
 ## 📆 프로젝트 기간
 ### 23.12.27 ~ 24.07.05
